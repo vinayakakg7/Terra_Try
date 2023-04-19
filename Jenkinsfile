@@ -15,6 +15,13 @@ pipeline {
         stage('Clone Git repository') {
             steps {
                 git branch: GIT_BRANCH, url: GIT_REPO
+            script {
+					// Get the list of culprits
+					def culprits = currentBuild.changeSets.collect { it.authorEmail }
+                    def subject = 'Git checkout ' + (currentBuild.currentResult == 'SUCCESS' ? 'successful' : 'failed')
+                    def body = 'The branch main was checked out ' + (currentBuild.currentResult == 'SUCCESS' ? 'successfully' : 'unsuccessfully') + '.\n\nChanges were made by: ' + culprits.join(', ')
+                    emailext subject: subject, body: body, to: 'vinayakakg7@gmail.com', attachLog: true
+                }
             }
         }
         stage('Terraform Init') {
@@ -57,5 +64,17 @@ pipeline {
                 }
             }
         }
+
+      stage('Build and test using Maven') {
+            steps {
+                bat 'mvn clean install -DskipTests=true'
+				
+				script {
+                    def subject = 'Build ' + (currentBuild.currentResult == 'SUCCESS' ? 'successful' : 'failed')
+                    def body = 'Maven Build was done ' + (currentBuild.currentResult == 'SUCCESS' ? 'successfully' : 'unsuccessfully')
+                    emailext subject: subject, body: body, to: 'vinayakakg7@gmail.com', attachLog: true
+                }
+            }
+          }
     }
 }
