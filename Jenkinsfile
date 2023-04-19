@@ -41,7 +41,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_CREDENTIALS']]) {
-                        bat 'terraform apply -auto-approve'
+                        bat 'terraform destroy -auto-approve'
                 }
                 }
             }
