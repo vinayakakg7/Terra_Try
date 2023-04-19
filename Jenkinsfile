@@ -19,24 +19,30 @@ pipeline {
         }
         stage('Terraform Init') {
             steps {
+                script {
                 withCredentials([<object of type com.cloudbees.jenkins.plugins.awscredentials.AmazonWebServicesCredentialsBinding>]) {
                     bat 'terraform init'
                 }
+            }
             }
         }
 
         stage('Terraform Plan') {
             steps {
+                script {
                 withCredentials([<object of type com.cloudbees.jenkins.plugins.awscredentials.AmazonWebServicesCredentialsBinding>]) {
                     bat 'terraform plan'
+                }
                 }
             }
         }
 
         stage('Terraform Apply') {
             steps {
+                script {
                 withCredentials([<object of type com.cloudbees.jenkins.plugins.awscredentials.AmazonWebServicesCredentialsBinding>]) {
                     bat 'terraform apply -auto-approve'
+                }
                 }
             }
         }
