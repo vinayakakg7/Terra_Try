@@ -20,6 +20,10 @@ resource "aws_instance" "Automation" {
   }
 }
 
+metadata {
+    hostname = "Automation-Server"
+  }
+
 output "public_ip" {
   value = aws_instance.Automation.public_ip
 }
