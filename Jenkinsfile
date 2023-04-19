@@ -37,11 +37,22 @@ pipeline {
             }
         }
 
-        stage('Terraform Apply') {
+        stage('Terraform Action') {
             steps {
                 script {
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_CREDENTIALS']]) {
-                        bat 'terraform destroy -auto-approve'
+            // Get the value of the "terra" parameter
+					def terra = params.terra
+
+            // Check if the "terra" parameter is set to "destroy"
+					if (terra == 'destroy') {
+                      echo 'Destroying infrastructure...'
+                      bat "terraform destroy --auto-approve"
+                      error "Aborting the pipeline after destroying infrastructure" // Stop the pipeline after the destroy command
+                    } else {
+                          echo 'Applying infrastructure...'
+                          bat "terraform apply --auto-approve"
+                        }
                 }
                 }
             }
