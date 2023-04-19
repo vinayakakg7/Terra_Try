@@ -80,7 +80,7 @@ pipeline {
         steps {
             script {
                 def publicIP = bat(returnStdout: true, script: "terraform output public_ip").trim().replace('"', '')
-            withCredentials([sshUserPrivateKey(credentialsId: 'Deploy_Auto', keyFileVariable: '')]) {
+            withCredentials([sshUserPrivateKey(credentialsId: 'Deploy_Auto', keyFileVariable: 'KEY_VAR_AWS')]) {
                 bat "ssh -T -o StrictHostKeyChecking=no ec2-user@${publicIP} 'sudo su'"
                 bat "ssh -T -o StrictHostKeyChecking=no ec2-user@${publicIP} 'cd /usr/local/tomcat9/webapps/'"
                 bat "ssh -T -o StrictHostKeyChecking=no ec2-user@${publicIP} 'sudo su'"
