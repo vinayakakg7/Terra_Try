@@ -26,10 +26,10 @@ resource "aws_instance" "Automation" {
 }
 
 resource "aws_instance_metadata" "example_metadata" {
-  instance_id = aws_instance.example_instance.id
+  instance_id = aws_instance.Automation.id
   
   document = {
-    "hostname" = "Automation"
+    "hostname" = "Automation-Server"
   }
 }
 
