@@ -14,15 +14,24 @@ resource "aws_instance" "Automation" {
   vpc_security_group_ids = [data.aws_security_group.example.id]
   associate_public_ip_address = true
 
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_put_response_hop_limit = 1
+  }
+
   tags = {
     Name = "Automation_Server1"
     OS   = "Amazon_Linux"
   }
 }
 
-metadata {
-    hostname = "Automation-Server"
+resource "aws_instance_metadata" "example_metadata" {
+  instance_id = aws_instance.example_instance.id
+  
+  document = {
+    "hostname" = "Automation"
   }
+}
 
 output "public_ip" {
   value = aws_instance.Automation.public_ip
