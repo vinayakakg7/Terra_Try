@@ -17,12 +17,12 @@ resource "aws_instance" "Automation" {
    user_data = <<-EOF
     #!/bin/bash
     # Set hostname
-    hostnamectl set-hostname "my-new-hostname"
+    hostnamectl set-hostname "Automation_Server"
     echo "127.0.0.1 $(hostname)" >> /etc/hosts
 
     # Update instance tags
     INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
-    aws ec2 create-tags --resources $INSTANCE_ID --tags Key=Hostname,Value=my-new-hostname
+    aws ec2 create-tags --resources $INSTANCE_ID --tags Key=Hostname,Value=Automation_Server
   EOF
 
   tags = {
