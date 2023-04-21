@@ -76,12 +76,12 @@ pipeline {
                 }
             }
           }
-        stage('Deploy to tomcat server')
+        stage('Deploy to tomcat server')  {
 		    steps {
 			  script {
                     def publicIP = sh(returnStdout: true, script: "terraform output public_ip").trim().replace('"', '')
 					deploy adapters: [tomcat9(path: '', url: 'http://${publicIP}:8080')], contextPath: null, war: 'springbootApp.jar'
-					
+                        }
 					}
 				}
 }
